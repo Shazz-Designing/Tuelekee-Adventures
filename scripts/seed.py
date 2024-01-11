@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import User, Destination, TravelCompanion, Itinerary, Activity, ItineraryItem, Base
 
+
 # Configure SQLite database
 DATABASE_URL = 'sqlite:///tuelekee_adventures.db'
 engine = create_engine(DATABASE_URL)
