@@ -1,7 +1,13 @@
 # seed.py
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import User, Destination, TravelCompanion, Itinerary, Activity, ItineraryItem, Base
+from models.user import User
+from models.destination import Destination
+from models.travel_companion import TravelCompanion
+from models.itinerary import Itinerary
+from models.activity import Activity
+from models.itinerary_item import ItineraryItem
+from models import Base
 
 
 # Configure SQLite database
@@ -9,7 +15,7 @@ DATABASE_URL = 'sqlite:///tuelekee_adventures.db'
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Create tables (if not existing)
+# Create tables 
 Base.metadata.create_all(bind=engine)
 
 # Seed Data
