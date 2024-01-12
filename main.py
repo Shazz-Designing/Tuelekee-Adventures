@@ -1,14 +1,14 @@
 from sqlalchemy.orm import sessionmaker
+from models.activity import Activity
+from models.itinerary import Itinerary
 from models.user import User
 from models.destination import Destination
-from models.travel_companion import TravelCompanion
-from models.itinerary import Itinerary
-from models.activity import Activity
 from models.itinerary_item import ItineraryItem
-from database import Base, engine
+from models.travel_companion import TravelCompanion
+from database import engine, Base, SessionLocal
 
 Base.metadata.bind = engine
-Base.metadata.create_all()
+Base.metadata.create_all(bind=engine)
 
 Session = sessionmaker(bind=engine)
 session = Session()

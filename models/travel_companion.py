@@ -12,4 +12,4 @@ class TravelCompanion(Base):
 
     # Relationship with User
     user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship("User", back_populates="travel_companion")
+    user = relationship("User", back_populates="travel_companion", cascade="all, delete-orphan", uselist=False)

@@ -1,19 +1,26 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
+from . import Base
 
-Base = declarative_base()
 
 class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, index=True)
-    email = Column(String, unique=True, index=True)
-    age = Column(Integer)
+    username = Column(String, index=True, unique=True)
+    email = Column(String, index=True, unique=True)
+    password = Column(String)
+    first_name = Column(String, index=True)
+    last_name = Column(String, index=True)
+    dob = Column(Date)
+    sex = Column(String)
 
-    # Relationship with Itinerary
-    itineraries = relationship("Itinerary", back_populates="user")
-
-    # Relationship with TravelCompanion
+    itineraries = relationship("Itinerary", back_populates="user", cascade="all, delete-orphan")
     travel_companion = relationship("TravelCompanion", uselist=False, back_populates="user")
+
+    def create_itinerary(self, destination):
+        from .itinerary import Itinerary  
+        new_itinerary = Itinerary(user=self, destination=destination)
+        return new_itinerary
+
+from .itinerary import Itinerary
