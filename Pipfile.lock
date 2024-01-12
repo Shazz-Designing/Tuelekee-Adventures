@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6480141063a6cf0b2f77a76bebe960e3c3a0b7ddd73455d87af5b8907f28b1ae"
+            "sha256": "d7938c13d4aaaff9fdd522f9dc0209f55112ca1a667590999a494c17552e8564"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -26,14 +26,31 @@
             "markers": "python_version >= '3.8'",
             "version": "==1.13.1"
         },
+        "click": {
+            "hashes": [
+                "sha256:ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28",
+                "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.7'",
+            "version": "==8.1.7"
+        },
+        "colorama": {
+            "hashes": [
+                "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44",
+                "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+            ],
+            "markers": "platform_system == 'Windows'",
+            "version": "==0.4.6"
+        },
         "faker": {
             "hashes": [
-                "sha256:3cd0e04ed7da1bb8037afc40d1127d19e0ac4afac247a1fe1d8dde9b5c6d6e5b",
-                "sha256:d1b8fe8e8fc96d816294a301741940c2229dcf1f5dd1231805666e4005cc6353"
+                "sha256:2c2b7a8e55368defd718226bd5b48ef31b2d082c2900ccb4200987e433be500e",
+                "sha256:fab78f435d27fa7bd109b095eea3504477e4149051c903fd63f11ce252e3d9b7"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==22.1.0"
+            "version": "==22.2.0"
         },
         "greenlet": {
             "hashes": [
