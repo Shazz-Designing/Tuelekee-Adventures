@@ -1,4 +1,5 @@
 import click
+from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import User, Activity, Destination
@@ -31,17 +32,37 @@ def view_user(user_id):
         click.echo(f"User with ID {user_id} not found.")
     session.close()
 
+# Commands for creating users
 @cli.command()
-@click.argument('name')
-@click.option('--age', default=25, help='Specify the age (default is 25)')
-def add_user(name, age):
+@click.option('--first-name', prompt='Enter your first name', help='First name of the user')
+@click.option('--last-name', prompt='Enter your last name', help='Last name of the user')
+@click.option('--email', prompt='Enter your email address', help='Email address of the user')
+@click.option('--dob', prompt='Enter your date of birth (YYYY-MM-DD)', help='Date of birth of the user')
+def add_user(first_name, last_name, email, dob):
     """Add a new user to the database."""
+    try:
+        dob_date = datetime.strptime(dob, '%Y-%m-%d').date()
+    except ValueError:
+        click.echo("Invalid date format. Please use the format YYYY-MM-DD.")
+        return
+    
+    # Calculate age
+    today = datetime.now().date()
+    age = today.year - dob_date.year - ((today.month, today.day) < (dob_date.month, dob_date.day))
+
     session = Session()
-    new_user = User(name=name, age=age)
+    new_user = User(name=f"{first_name} {last_name}", email=email, age=age)
     session.add(new_user)
     session.commit()
-    click.echo(f"User {name} added successfully with ID: {new_user.id}")
+    
+    click.echo(f"New user created with the following details:")
+    click.echo(f"User ID: {new_user.id}")
+    click.echo(f"Name: {new_user.name}")
+    click.echo(f"Email: {new_user.email}")
+    click.echo(f"Age: {new_user.age}")
+
     session.close()
+
 
 # Commands for managing activities
 @cli.command()
