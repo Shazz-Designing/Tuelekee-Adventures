@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
-# User, Itinerary, and Activity tables with relationships
+# User, Itinerary, Destination and Activity tables with relationships
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
@@ -28,3 +28,16 @@ class Activity(Base):
     __tablename__ = 'activities'
     id = Column(Integer, primary_key=True)
     name = Column(String)
+
+class Destination(Base):
+    __tablename__ = 'destinations'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    activities = relationship('Activity', secondary='activity_destination_association')
+
+activity_destination_association = Table(
+    'activity_destination_association',
+    Base.metadata,
+    Column('activity_id', Integer, ForeignKey('activities.id')),
+    Column('destination_id', Integer, ForeignKey('destinations.id'))
+)

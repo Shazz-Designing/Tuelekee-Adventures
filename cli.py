@@ -1,7 +1,7 @@
 import click
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import User, Activity
+from models import User, Activity, Destination
 
 engine = create_engine("sqlite:///tuelekee.db")  # Adjust the database URL as needed
 Session = sessionmaker(bind=engine)
@@ -75,6 +75,20 @@ def add_activity(name):
     session.commit()
     click.echo(f"Activity {name} added successfully with ID: {new_activity.id}")
     session.close()
+
+
+@cli.command()
+def list_destinations():
+    """List all destinations and their activities."""
+    session = Session()
+    destinations = session.query(Destination).all()
+    for destination in destinations:
+        click.echo(f"Destination ID: {destination.id}, Name: {destination.name}")
+        click.echo("Activities:")
+        for activity in destination.activities:
+            click.echo(f"  - Activity ID: {activity.id}, Name: {activity.name}")
+    session.close()
+
 
 if __name__ == '__main__':
     cli()
