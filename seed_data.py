@@ -5,6 +5,8 @@ from models import Base, Destination, Activity
 engine = create_engine('sqlite:///tuelekee.db')
 Base.metadata.bind = engine
 
+Base.metadata.create_all(engine)
+
 # Session to interact with the database
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -127,5 +129,3 @@ for destination_info in destinations_data:
         session.commit()
 
 session.close()
-
-Base.metadata.create_all(engine)
