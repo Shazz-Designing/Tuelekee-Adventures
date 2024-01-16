@@ -5,11 +5,11 @@ from models import Base, Destination, Activity
 engine = create_engine('sqlite:///tuelekee.db')
 Base.metadata.bind = engine
 
-#Session to interact with the database
+# Session to interact with the database
 Session = sessionmaker(bind=engine)
 session = Session()
 
-#Destinations and activities
+# Destinations and activities
 destinations_data = [
     {
         'name': 'DIANI - KENYA',
@@ -114,13 +114,18 @@ destinations_data = [
 ]
 
 for destination_info in destinations_data:
+    # Create a Destination object
     destination = Destination(name=destination_info['name'])
     session.add(destination)
     session.commit()
 
+    # Add activities related to the destination
     for activity_info in destination_info['activities']:
+        # Create an Activity object and associate it with the destination
         activity = Activity(name=activity_info['name'], destination=destination)
         session.add(activity)
         session.commit()
 
-print("Data added to the database.")
+session.close()
+
+Base.metadata.create_all(engine)
