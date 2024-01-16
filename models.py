@@ -8,6 +8,7 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    email = Column(String)
     itineraries = relationship('Itinerary', back_populates='user')
 
 class Itinerary(Base):
@@ -33,11 +34,11 @@ class Destination(Base):
     __tablename__ = 'destinations'
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    activities = relationship('Activity', secondary='activity_destination_association')
+    activities = relationship('Activity', back_populates='destination')
 
-activity_destination_association = Table(
-    'activity_destination_association',
-    Base.metadata,
-    Column('activity_id', Integer, ForeignKey('activities.id')),
-    Column('destination_id', Integer, ForeignKey('destinations.id'))
-)
+class Activity(Base):
+    __tablename__ = 'activities'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    destination_id = Column(Integer, ForeignKey('destinations.id'))
+    destination = relationship('Destination', back_populates='activities')
