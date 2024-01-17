@@ -73,7 +73,7 @@ Replace <user_id> with the ID of the user you want to view.
 
 4. Activity Management        
 
-        ```bash
+   ```bash
 
         python cli.py view_activity <activity_id>
 
@@ -81,26 +81,30 @@ Replace <user_id> with the ID of the user you want to view.
 
 5. Destination Exploration
 
-        ```bash
+   ```bash
 
         python cli.py list_destinations
 
 6. Itinerary Creation
     
-        ```bash
+   ```bash
 
         python cli.py create_itinerary <user_id>
 
-Follow the prompts to select a destination, activities, and specify if a travel companion is desired. Replace <user_id> with the ID of the user for whom the itinerary is created.
+Follow the prompts to select a destination and activities, and specify if a travel companion is desired. Replace <user_id> with the ID of the user for whom the itinerary is created.
 
 ## KEY FEATURES
-### User Management: Register new users, view user details, and list all users in the database.
+### User Management: 
+   Register new users, view user details, and list all users in the database.
 
-### Activity Management: View details of specific activities, list all activities, and explore destinations and their associated activities.
+### Activity Management: 
+   View details of specific activities, list all activities, and explore destinations and their associated activities.
 
-### Destination Exploration: List all destinations and their activities, allowing users to choose from a variety of options.
+### Destination Exploration: 
+   List all destinations and their activities, allowing users to choose from a variety of options.
 
-### Itinerary Creation: Create travel itineraries by selecting a user, destination, activities, and specifying if a travel companion is desired.
+### Itinerary Creation: 
+   Create travel itineraries by selecting a user, destination, and activities, and specifying if a travel companion is desired.
 
 
 ## DATABASE SCHEMA
@@ -132,7 +136,7 @@ An activity can be associated with multiple itineraries.
 ## VIRTUAL ENVIRONMENT
 1. The project utilizes Pipenv to maintain a well-structured virtual environment. Ensure that the virtual environment is activated before running any CLI commands.
      
-        ```bash
+   ```bash
 
     pipenv shell
 
