@@ -71,32 +71,22 @@ Replace <user_id> with the ID of the user you want to view.
 
     python cli.py list_users
 
-4. Activity Management
-        
-        View Activity Details
+4. Activity Management        
 
         ```bash
 
         python cli.py view_activity <activity_id>
 
-    Replace <activity_id> with the ID of the activity you want to view.
-
-        List All Activities
-
-        ```bash
-
         python cli.py list_activities
 
 5. Destination Exploration
-
-        List All Destinations
 
         ```bash
 
         python cli.py list_destinations
 
 6. Itinerary Creation
-    Create a New Itinerary
+    
         ```bash
 
         python cli.py create_itinerary <user_id>
@@ -140,7 +130,14 @@ An itinerary can have multiple activities.
 An activity can be associated with multiple itineraries.
 
 ## VIRTUAL ENVIRONMENT
-The project utilizes Pipenv to maintain a well-structured virtual environment. Ensure that the virtual environment is activated before running any CLI commands.
-
+1. The project utilizes Pipenv to maintain a well-structured virtual environment. Ensure that the virtual environment is activated before running any CLI commands.
+     
         ```bash
+
     pipenv shell
+
+## Contributing
+If you'd like to contribute, please fork the repository and create a new branch. Pull requests are welcome!
+
+## License
+This project is licensed under the MIT License.
