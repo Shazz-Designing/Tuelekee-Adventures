@@ -4,8 +4,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import User, Activity, Destination, Itinerary
 
-engine = create_engine("sqlite:///tuelekee.db")  # Adjust the database URL as needed
+engine = create_engine("sqlite:///tuelekee.db") 
 Session = sessionmaker(bind=engine)
+session = Session()
 
 @click.group()
 def cli():
@@ -32,7 +33,7 @@ def view_user(user_id):
         click.echo(f"User with ID {user_id} not found.")
     session.close()
 
-# Commands for creating users
+# Commands for registering users
 @cli.command()
 @click.option('--first-name', prompt='Enter your first name', help='First name of the user')
 @click.option('--last-name', prompt='Enter your last name', help='Last name of the user')
@@ -55,7 +56,7 @@ def register(first_name, last_name, email, dob):
     session.add(new_user)
     session.commit()
     
-    click.echo(f"New user regsitered with the following details:")
+    click.echo(f"New user registered with the following details:")
     click.echo(f"User ID: {new_user.id}")
     click.echo(f"Name: {new_user.name}")
     click.echo(f"Email: {new_user.email}")
@@ -84,17 +85,6 @@ def view_activity(activity_id):
         click.echo(f"Activity ID: {activity.id}, Name: {activity.name}")
     else:
         click.echo(f"Activity with ID {activity_id} not found.")
-    session.close()
-
-@cli.command()
-@click.argument('name')
-def add_activity(name):
-    """Add a new activity to the database."""
-    session = Session()
-    new_activity = Activity(name=name)
-    session.add(new_activity)
-    session.commit()
-    click.echo(f"Activity {name} added successfully with ID: {new_activity.id}")
     session.close()
 
 
@@ -126,40 +116,47 @@ def create_itinerary(user_id):
 
     click.echo(f"Creating itinerary for {user.name}")
 
-    # Display list of destinations
+    # Display available destinations
     destinations = session.query(Destination).all()
-    click.echo("Available Destinations:")
     for destination in destinations:
         click.echo(f"Destination ID: {destination.id}, Name: {destination.name}")
 
+    # Prompt for destination selection
     destination_id = click.prompt("Enter the ID of the selected destination", type=int)
-
-    # Display activities for the selected destination
     destination = session.query(Destination).get(destination_id)
-    if destination:
-        click.echo(f"Activities for {destination.name}:")
-        for activity in destination.activities:
-            click.echo(f"Activity ID: {activity.id}, Name: {activity.name}")
-
-        activity_id = click.prompt("Enter the ID of the selected activity", type=int)
-
-        # Ask if user wants a travel companion
-        travel_companion = click.confirm("Do you want a travel companion?")
-
-        # Create itinerary
-        new_itinerary = Itinerary(user=user, destination=destination, activity_id=activity_id, travel_companion=travel_companion)
-        session.add(new_itinerary)
-        session.commit()
-
-        click.echo("Itinerary created successfully!")
-        click.echo("Itinerary Details:")
-        click.echo(f"User: {user.name}")
-        click.echo(f"Destination: {destination.name}")
-        click.echo(f"Activity: {activity.name}")
-        click.echo(f"Travel Companion: {'Yes' if travel_companion else 'No'}")
-
-    else:
+    if destination is None:
         click.echo(f"Destination with ID {destination_id} not found.")
+        session.close()
+        return
+
+    click.echo(f"Activities for {destination.name}:")
+    for activity in destination.activities:
+        click.echo(f"Activity ID: {activity.id}, Name: {activity.name}")
+
+    # Prompt for activity selection
+    activity_ids_input = input("Enter the ID(s) of the selected activities separated with a comma and a space if multiple: ").strip()
+    
+    selected_activity_ids = [int(id.strip()) for id in activity_ids_input.split(',')]
+    selected_activities = session.query(Activity).filter(Activity.id.in_(selected_activity_ids)).all()
+
+    # Prompt for travel companion
+    travel_companion = click.confirm("Do you want a travel companion?", default=False)
+
+    # Create and display itinerary
+    new_itinerary = Itinerary(user=user, destination=destination, travel_companion=travel_companion)
+    new_itinerary.activities = selected_activities
+
+    session.add(new_itinerary)
+    session.commit()
+
+    click.echo("Itinerary created successfully:")
+    click.echo(f"Itinerary ID: {new_itinerary.id}")
+    click.echo(f"User: {user.name}")
+    click.echo(f"Destination: {destination.name}")
+    click.echo(f"Activities:")
+    for activity in selected_activities:
+        click.echo(f"  - {activity.name}")
+    click.echo(f"Travel Companion: {'Yes' if travel_companion else 'No'}")
 
     session.close()
 
